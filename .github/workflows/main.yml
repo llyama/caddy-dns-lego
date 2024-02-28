@@ -14,14 +14,14 @@ jobs:
     
     steps:
     - name: Checkout
-      uses: actions/checkout@v4.1.1
+      uses: actions/checkout@v4
 
     - name: Build Caddy image
       id: build_caddy
       uses: redhat-actions/buildah-build@v2
       with:
         containerfiles: ./Containerfile
-        image: ghcr.io/llyama/caddy-dns-lego
+        image: caddy-dns-lego
         tags: latest run-${{ github.run_number }} ${{ github.sha }}
     
     - name: Publish to GitHub registry
@@ -29,6 +29,6 @@ jobs:
       with:
         image: ${{ steps.build_caddy.outputs.image }}
         tags: ${{ steps.build_caddy.outputs.tags }}
-        registry: ghcr.io
+        registry: ghcr.io/llyama
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
